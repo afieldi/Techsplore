@@ -1,12 +1,12 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import { CreateHTTPContextOptions } from '@trpc/server/adapters/standalone'
 import { z } from 'zod'
 import { FeedItem, CreateUserInput, LoginInput, AuthResponse } from '@techsplore/schemas'
 import { FeedRepo, UserRepo } from '@techsplore/db'
 import { generateToken, verifyToken, extractTokenFromHeader } from './auth'
+import type { FastifyRequest, FastifyReply } from 'fastify'
 
-export const createContext = async ({ req }: CreateHTTPContextOptions) => {
-  const token = extractTokenFromHeader(req.headers.authorization)
+export const createContext = async ({ req, res }: { req: FastifyRequest; res: FastifyReply }) => {
+  const token = extractTokenFromHeader(req.headers.authorization as string)
   let user = null
   
   if (token) {
