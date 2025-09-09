@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FeedItem {
+  id          String   @id
+  title       String
+  url         String   @unique
+  imageUrl    String?
+  source      String
+  price       Float?
+  tags        String[]
+  publishedAt DateTime @db.Timestamptz
+  summary     String?
+  savedBy     UserSavedItem[]
+}
+
+model UserSavedItem {
+  userId String
+  itemId String
+  item   FeedItem @relation(fields: [itemId], references: [id])
+
+  @@id([userId, itemId])
+  @@index([itemId])
+}
+
+

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@techsplore/schemas": ["packages/schemas/src/index.ts"],
+      "@techsplore/schemas/*": ["packages/schemas/src/*"],
+      "@techsplore/db": ["packages/db/src/index.ts"],
+      "@techsplore/db/*": ["packages/db/src/*"],
+      "@techsplore/env": ["packages/env/src/index.ts"],
+      "@techsplore/ui": ["packages/ui/src/index.ts"],
+      "@techsplore/ui/*": ["packages/ui/src/*"]
+    }
+  }
+}
