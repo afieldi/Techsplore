@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,19 +14,32 @@ model FeedItem {
   imageUrl    String?
   source      String
   price       Float?
-  tags        String[]
-  publishedAt DateTime @db.Timestamptz
+  tags        String
+  publishedAt DateTime
   summary     String?
   savedBy     UserSavedItem[]
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+  name     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  savedItems UserSavedItem[]
 }
 
 model UserSavedItem {
   userId String
   itemId String
+  user   User @relation(fields: [userId], references: [id])
   item   FeedItem @relation(fields: [itemId], references: [id])
 
   @@id([userId, itemId])
   @@index([itemId])
+  @@index([userId])
 }
 
 
