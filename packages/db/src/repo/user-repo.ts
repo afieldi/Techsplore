@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs'
 export class UserRepo {
   static async create(input: CreateUserInput): Promise<User> {
     const hashedPassword = await bcrypt.hash(input.password, 12)
-    
     const user = await prisma.user.create({
       data: {
         email: input.email,
