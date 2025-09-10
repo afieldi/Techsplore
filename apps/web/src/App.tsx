@@ -1,4 +1,3 @@
-import './App.css'
 import { trpc } from './lib/trpc'
 import { useAuth } from './contexts/AuthContext'
 import { AuthModal } from './components/AuthModal'
@@ -51,7 +50,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="app">
+      <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
         <AppHeader
           getPageTitle={getPageTitle}
           onSignInClick={() => setShowAuthModal(true)}
@@ -66,7 +65,7 @@ function App() {
 
   if (error) {
     return (
-      <div className="app">
+      <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
         <AppHeader
           getPageTitle={getPageTitle}
           onSignInClick={() => setShowAuthModal(true)}
@@ -82,7 +81,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
       <AppHeader
         getPageTitle={getPageTitle}
         onSignInClick={() => setShowAuthModal(true)}
@@ -93,12 +92,12 @@ function App() {
         <FeedNavigation currentView={currentView} setCurrentView={setCurrentView} />
       )}
       
-      <main className="feed-container">
+      <main className="flex-grow container mx-auto px-4 py-8">
         {currentView === 'saved' && (!data?.items?.length) && !isLoading && (
           <EmptyState onBrowseFeedClick={() => setCurrentView('discover')} />
         )}
         
-        <div className="feed-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data?.items?.map((item) => (
             <FeedCard key={item.id} item={item} />
           ))}

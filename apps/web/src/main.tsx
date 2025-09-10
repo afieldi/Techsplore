@@ -6,6 +6,7 @@ import { trpc } from './lib/trpc'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
 import { AuthProvider } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 const queryClient = new QueryClient()
 const trpcClient = trpc.createClient({
@@ -25,7 +26,9 @@ createRoot(document.getElementById('root')!).render(
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </AuthProvider>
       </QueryClientProvider>
     </trpc.Provider>
