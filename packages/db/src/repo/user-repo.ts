@@ -21,7 +21,7 @@ export class UserRepo {
       },
     })
     
-    return user
+    return user as User
   }
 
   static async findByEmail(email: string) {
@@ -42,7 +42,7 @@ export class UserRepo {
       },
     })
     
-    return user
+    return user as User
   }
 
   static async verifyPassword(user: { password: string }, password: string): Promise<boolean> {

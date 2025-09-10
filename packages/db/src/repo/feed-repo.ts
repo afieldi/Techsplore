@@ -84,7 +84,7 @@ export class FeedRepo {
     const preferredTags = [...new Set(
       savedItems.flatMap(si => {
         try {
-          return JSON.parse(si.item.tags)
+          return si.item.tags
         } catch {
           return []
         }

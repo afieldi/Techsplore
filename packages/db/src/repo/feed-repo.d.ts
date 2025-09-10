@@ -1,13 +1,13 @@
 import type { FeedItem } from '@techsplore/schemas';
 export declare class FeedRepo {
     static upsertMany(items: Array<FeedItem>): Promise<{
-        url: string;
         source: string;
         id: string;
         title: string;
+        url: string;
         imageUrl: string | null;
         price: number | null;
-        tags: string[];
+        tags: string;
         publishedAt: Date;
         summary: string | null;
     }[]>;
@@ -22,4 +22,20 @@ export declare class FeedRepo {
         userId: string;
         itemId: string;
     }): Promise<void>;
+    static getSavedItems(params: {
+        userId: string;
+        cursor: string | null;
+        limit: number;
+    }): Promise<{
+        items: any[];
+        nextCursor: string | null;
+    }>;
+    static getPersonalizedFeed(params: {
+        userId: string;
+        cursor: string | null;
+        limit: number;
+    }): Promise<{
+        items: any[];
+        nextCursor: string | null;
+    }>;
 }

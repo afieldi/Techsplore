@@ -6,6 +6,7 @@
     "moduleResolution": "Bundler",
     "target": "ES2022",
     "baseUrl": ".",
+    "sourceMap": true,
     "paths": {
       "@techsplore/schemas": ["packages/schemas/src/index.ts"],
       "@techsplore/schemas/*": ["packages/schemas/src/*"],

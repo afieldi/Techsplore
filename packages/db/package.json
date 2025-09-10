@@ -4,16 +4,25 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx --env-file=./.env seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
     "@techsplore/schemas": "workspace:*",
-    "bcryptjs": "^3.0.2"
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^24.3.1",
     "prisma": "^6.15.0",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3"
