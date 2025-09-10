@@ -1,1 +1,50 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: rgb(37 99 235);
+  --color-secondary: rgb(22 163 74);
+  --color-tertiary: rgb(107 114 128);
+  --color-success: rgb(34 197 94);
+  --color-error: rgb(239 68 68);
+
+  --color-background: rgb(255 255 255);
+  --text-color-primary: rgb(17 24 39);
+  --text-color-secondary: rgb(110 113 117);
+  --color-card: rgb(255 255 255);
+  --color-button-primary: rgb(37 99 235);
+  --color-button-primary-hover: rgb(29 78 216);
+  --color-button-secondary-bg: rgb(229 231 235);
+  --color-button-secondary-hover: rgb(209 213 219);
+  --color-dropdown-item-hover: rgb(243 244 246);
+  --color-tag-bg: rgb(229 231 235);
+}
+
+@layer base {
+  .dark {
+    --color-primary: rgb(37 99 235);
+    --color-secondary: rgb(22 163 74);
+    --color-tertiary: rgb(107 114 128);
+    --color-success: rgb(34 197 94);
+    --color-error: rgb(239 68 68);
+
+    --color-background: rgb(17 24 39);
+    --text-color-primary: rgb(243 244 246);
+    --text-color-secondary: rgb(187, 191, 200);
+    --color-card: rgb(31 41 55);
+    --color-button-primary: rgb(59 130 246);
+    --color-button-primary-hover: rgb(37 99 235);
+    --color-button-secondary-bg: rgb(55 65 81);
+    --color-button-secondary-hover: rgb(75 85 99);
+    --color-dropdown-item-hover: rgb(55 65 81);
+    --color-tag-bg: rgb(55 65 81);
+  }
+}
+
+/* @layer utilities {
+  .text-primary {
+    color: var(--color-text);
+  }
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+} */

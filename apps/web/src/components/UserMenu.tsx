@@ -14,7 +14,7 @@ export function UserMenu({ onViewSavedItems }: UserMenuProps) {
   return (
     <div className="relative">
       <button 
-        className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="flex items-center gap-2 px-4 py-2 rounded-md bg-button-secondary-bg text-primary hover:bg-button-secondary-hover transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
         {user.name || user.email}
@@ -30,12 +30,12 @@ export function UserMenu({ onViewSavedItems }: UserMenuProps) {
       </button>
       
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1 z-10">
-          <button className="block w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+        <div className="absolute right-0 mt-2 w-48 bg-card rounded-md shadow-lg py-1 z-10">
+          <button className="block w-full text-left px-4 py-2 text-primary hover:bg-dropdown-item-hover">
             My Profile
           </button>
           <button 
-            className="block w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="block w-full text-left px-4 py-2 text-primary hover:bg-dropdown-item-hover"
             onClick={() => {
               onViewSavedItems()
               setIsOpen(false)
@@ -44,7 +44,7 @@ export function UserMenu({ onViewSavedItems }: UserMenuProps) {
             Saved Items
           </button>
           <button 
-            className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-800"
+            className="block w-full text-left px-4 py-2 text-error hover:bg-red-100 dark:hover:bg-red-800"
             onClick={() => {
               logout()
               setIsOpen(false)

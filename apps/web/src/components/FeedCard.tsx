@@ -42,7 +42,7 @@ export function FeedCard({ item }: { item: FeedItem }) {
   }
 
   return (
-    <article className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+    <article className="bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
       <div className="relative h-48 w-full">
         {item.imageUrl && (
           <img 
@@ -52,12 +52,12 @@ export function FeedCard({ item }: { item: FeedItem }) {
             className="w-full h-full object-cover"
           />
         )}
-        <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+        <div className="absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full">
           {item.source}
         </div>
         {user && (
           <button 
-            className="absolute top-2 right-2 bg-white dark:bg-gray-700 p-2 rounded-full shadow-md text-gray-700 dark:text-gray-300 hover:scale-110 transition-transform"
+            className="absolute top-2 right-2 bg-card p-2 rounded-full shadow-md text-primary hover:scale-110 transition-transform"
             onClick={handleSave}
             disabled={saveItemMutation.isPending}
             title={saveItemMutation.isSuccess ? 'Saved!' : 'Save item'}
@@ -70,30 +70,30 @@ export function FeedCard({ item }: { item: FeedItem }) {
       <div className="p-4 flex flex-col justify-between">
         <div>
           <header className="flex justify-between items-start mb-2">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 leading-tight pr-2">
-              <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <h2 className="text-xl font-semibold text-primary leading-tight pr-2">
+              <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">
                 {item.title}
               </a>
             </h2>
             {item.price && (
-              <span className="text-lg font-bold text-green-600 dark:text-green-400 whitespace-nowrap">{formatPrice(item.price)}</span>
+              <span className="text-lg font-bold text-secondary whitespace-nowrap">{formatPrice(item.price)}</span>
             )}
           </header>
           
           {item.summary && (
-            <p className="text-gray-700 dark:text-gray-300 text-sm mb-4 line-clamp-3">{item.summary}</p>
+            <p className="text-secondary text-sm mb-4 line-clamp-3">{item.summary}</p>
           )}
         </div>
         
-        <footer className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+        <footer className="flex justify-between items-center text-sm text-tertiary">
           <div className="flex flex-wrap gap-2">
             {item.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full text-xs font-medium">
+              <span key={tag} className="bg-tag-bg px-2 py-1 rounded-full text-xs font-medium">
                 {tag}
               </span>
             ))}
             {item.tags.length > 3 && (
-              <span className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full text-xs font-medium">
+              <span className="bg-tag-bg px-2 py-1 rounded-full text-xs font-medium">
                 +{item.tags.length - 3}
               </span>
             )}

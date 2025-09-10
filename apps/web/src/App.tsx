@@ -50,7 +50,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
+      <div className="min-h-screen bg-background text-primary flex flex-col">
         <AppHeader
           getPageTitle={getPageTitle}
           onSignInClick={() => setShowAuthModal(true)}
@@ -65,7 +65,7 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
+      <div className="min-h-screen bg-background text-primary flex flex-col">
         <AppHeader
           getPageTitle={getPageTitle}
           onSignInClick={() => setShowAuthModal(true)}
@@ -75,13 +75,13 @@ function App() {
           <div className="error-message">
             Error loading feed: {error.message}
           </div>
-        </main>
+        </main> 
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col">
+    <div className="min-h-screen bg-background text-primary flex flex-col">
       <AppHeader
         getPageTitle={getPageTitle}
         onSignInClick={() => setShowAuthModal(true)}
