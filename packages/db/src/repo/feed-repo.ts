@@ -65,7 +65,7 @@ export class FeedRepo {
       } : {}),
     })
 
-    const items = savedItems.map(savedItem => savedItem.item)
+    const items = savedItems.map((savedItem: any) => savedItem.item)
     const nextCursor = items.length === params.limit ? items[items.length - 1]?.id ?? null : null
     return { items, nextCursor } as { items: any[]; nextCursor: string | null }
   }
@@ -80,9 +80,9 @@ export class FeedRepo {
     })
 
     // Extract preferred sources and tags from saved items
-    const preferredSources = [...new Set(savedItems.map(si => si.item.source))]
+    const preferredSources = [...new Set(savedItems.map((si: any) => si.item.source))]
     const preferredTags = [...new Set(
-      savedItems.flatMap(si => {
+      savedItems.flatMap((si: any) => {
         try {
           return si.item.tags
         } catch {
@@ -125,7 +125,7 @@ export class FeedRepo {
     // If we don't have enough personalized items, fill with regular feed
     if (items.length < params.limit) {
       const remainingCount = params.limit - items.length
-      const existingIds = items.map(item => item.id)
+      const existingIds = items.map((item: any) => item.id)
       
       const additionalItems = await prisma.feedItem.findMany({
         where: existingIds.length > 0 ? { id: { notIn: existingIds } } : {},

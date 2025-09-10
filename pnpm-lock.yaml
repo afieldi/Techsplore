@@ -18,9 +18,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@fastify/cors':
-        specifier: ^11.1.0
-        version: 11.1.0
       '@techsplore/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -46,6 +43,9 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5
     devDependencies:
+      '@fastify/cors':
+        specifier: ^11.1.0
+        version: 11.1.0
       '@types/jsonwebtoken':
         specifier: ^9.0.10
         version: 9.0.10

@@ -4,7 +4,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {"build": "tsup src/index.ts --dts --format esm,cjs"},
+  "scripts": {"build": "tsc -b"},
   "devDependencies": {
     "tsup": "^8.5.0",
     "typescript": "~5.8.3"
