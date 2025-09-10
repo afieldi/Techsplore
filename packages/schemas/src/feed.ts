@@ -10,7 +10,7 @@ export const FeedItem = z.object({
   imageUrl: z.string().url().optional(),
   source: Source,
   price: z.number().optional(),
-  tags: z.array(z.string()).default([]),
+  tags: z.string().transform((val) => JSON.parse(val)).pipe(z.array(z.string())).default([]),
   publishedAt: z.coerce.date(),
   summary: z.string().optional(),
 })

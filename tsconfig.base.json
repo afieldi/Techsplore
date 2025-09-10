@@ -6,14 +6,15 @@
     "moduleResolution": "Bundler",
     "target": "ES2022",
     "baseUrl": ".",
+    "sourceMap": true,
     "paths": {
-      "@techsplore/schemas": ["packages/schemas/src/index.ts"],
-      "@techsplore/schemas/*": ["packages/schemas/src/*"],
-      "@techsplore/db": ["packages/db/src/index.ts"],
-      "@techsplore/db/*": ["packages/db/src/*"],
-      "@techsplore/env": ["packages/env/src/index.ts"],
-      "@techsplore/ui": ["packages/ui/src/index.ts"],
-      "@techsplore/ui/*": ["packages/ui/src/*"]
+      "@techsplore/schemas": ["packages/schemas/dist/index.js"],
+      "@techsplore/schemas/*": ["packages/schemas/dist/*"],
+      "@techsplore/db": ["packages/db/dist/index.js"],
+      "@techsplore/db/*": ["packages/db/dist/*"],
+      "@techsplore/env": ["packages/env/dist/index.js"],
+      "@techsplore/ui": ["packages/ui/dist/index.js"],
+      "@techsplore/ui/*": ["packages/ui/dist/*"]
     }
   }
 }

@@ -1,3 +1,9 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+console.log('DATABASE_URL', process.env.DATABASE_URL)
+
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import { loadEnv } from '@techsplore/env'
@@ -11,7 +17,10 @@ async function buildServer() {
 
   await app.register(fastifyTRPCPlugin, {
     prefix: '/trpc',
-    trpcOptions: { router: appRouter, createContext },
+    trpcOptions: {
+      router: appRouter,
+      createContext: createContext as any, // Type assertion to fix type incompatibility
+    },
   })
 
   app.get('/health', async () => ({ ok: true }))

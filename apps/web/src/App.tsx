@@ -1,22 +1,115 @@
 import './App.css'
 import { trpc } from './lib/trpc'
+import { useAuth } from './contexts/AuthContext'
+import { AuthModal } from './components/AuthModal'
+import { useState } from 'react'
+import { AppHeader } from './components/AppHeader'
+import { FeedCard, FeedItem } from './components/FeedCard'
+import { FeedNavigation } from './components/FeedNavigation'
+import { EmptyState } from './components/EmptyState'
+
+type FeedView = 'discover' | 'personalized' | 'saved'
 
 function App() {
-  const { data } = trpc.feed.useQuery({ limit: 5 })
+  const { user } = useAuth()
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [currentView, setCurrentView] = useState<FeedView>('discover')
+
+  // Use personalized feed if user is authenticated and on discover view
+  const shouldUsePersonalizedFeed = user && currentView === 'discover'
+  
+  const { data: regularFeedData, isLoading: regularFeedLoading, error: regularFeedError } = trpc.feed.useQuery(
+    { limit: 20 }, 
+    { enabled: !shouldUsePersonalizedFeed && currentView !== 'saved' }
+  )
+  
+  const { data: personalizedFeedData, isLoading: personalizedFeedLoading, error: personalizedFeedError } = trpc.personalizedFeed.useQuery(
+    { limit: 20 }, 
+    { enabled: false }
+  )
+  
+  const { data: savedItemsData, isLoading: savedItemsLoading, error: savedItemsError } = trpc.savedItems.useQuery(
+    { limit: 20 }, 
+    { enabled: currentView === 'saved' && !!user }
+  )
+
+  // Determine which data to use
+  const data = currentView === 'saved' ? savedItemsData : 
+               shouldUsePersonalizedFeed ? personalizedFeedData : regularFeedData
+  const isLoading = currentView === 'saved' ? savedItemsLoading :
+                   shouldUsePersonalizedFeed ? personalizedFeedLoading : regularFeedLoading
+  const error = currentView === 'saved' ? savedItemsError :
+               shouldUsePersonalizedFeed ? personalizedFeedError : regularFeedError
+
+  const getPageTitle = () => {
+    switch (currentView) {
+      case 'saved': return 'Your Saved Items'
+      case 'discover': return user ? 'Your Personalized Feed' : 'Latest Tech Discoveries'
+      default: return 'Discover the latest in tech and innovation'
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="app">
+        <AppHeader
+          getPageTitle={getPageTitle}
+          onSignInClick={() => setShowAuthModal(true)}
+          onViewSavedItems={() => setCurrentView('saved')}
+        />
+        <main className="feed-container">
+          <div className="loading-spinner">Loading...</div>
+        </main>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="app">
+        <AppHeader
+          getPageTitle={getPageTitle}
+          onSignInClick={() => setShowAuthModal(true)}
+          onViewSavedItems={() => setCurrentView('saved')}
+        />
+        <main className="feed-container">
+          <div className="error-message">
+            Error loading feed: {error.message}
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
-    <>
-      <h1>Techsplore</h1>
-      <ul>
-        {data?.items?.map((item) => (
-          <li key={item.id}>
-            <a href={item.url} target="_blank" rel="noreferrer">
-              {item.title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </>
+    <div className="app">
+      <AppHeader
+        getPageTitle={getPageTitle}
+        onSignInClick={() => setShowAuthModal(true)}
+        onViewSavedItems={() => setCurrentView('saved')}
+      />
+
+      {user && (
+        <FeedNavigation currentView={currentView} setCurrentView={setCurrentView} />
+      )}
+      
+      <main className="feed-container">
+        {currentView === 'saved' && (!data?.items?.length) && !isLoading && (
+          <EmptyState onBrowseFeedClick={() => setCurrentView('discover')} />
+        )}
+        
+        <div className="feed-grid">
+          {data?.items?.map((item) => (
+            <FeedCard key={item.id} item={item} />
+          ))}
+        </div>
+      </main>
+
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
+    </div>
   )
 }
 

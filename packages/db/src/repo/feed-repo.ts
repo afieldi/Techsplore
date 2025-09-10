@@ -13,7 +13,7 @@ export class FeedRepo {
             imageUrl: item.imageUrl,
             source: item.source,
             price: item.price ?? null,
-            tags: item.tags,
+            tags: JSON.stringify(item.tags),
             publishedAt: item.publishedAt,
             summary: item.summary ?? null,
           },
@@ -24,7 +24,7 @@ export class FeedRepo {
             imageUrl: item.imageUrl,
             source: item.source,
             price: item.price ?? null,
-            tags: item.tags,
+            tags: JSON.stringify(item.tags),
             publishedAt: item.publishedAt,
             summary: item.summary ?? null,
           },
@@ -49,6 +49,96 @@ export class FeedRepo {
       update: {},
       create: { userId: params.userId, itemId: params.itemId },
     })
+  }
+
+  static async getSavedItems(params: { userId: string; cursor: string | null; limit: number }) {
+    const savedItems = await prisma.userSavedItem.findMany({
+      where: { userId: params.userId },
+      include: {
+        item: true,
+      },
+      take: params.limit,
+      orderBy: { item: { publishedAt: 'desc' } },
+      ...(params.cursor ? { 
+        skip: 1, 
+        cursor: { userId_itemId: { userId: params.userId, itemId: params.cursor } }
+      } : {}),
+    })
+
+    const items = savedItems.map((savedItem: any) => savedItem.item)
+    const nextCursor = items.length === params.limit ? items[items.length - 1]?.id ?? null : null
+    return { items, nextCursor } as { items: any[]; nextCursor: string | null }
+  }
+
+  static async getPersonalizedFeed(params: { userId: string; cursor: string | null; limit: number }) {
+    // Get user's saved items to understand preferences
+    const savedItems = await prisma.userSavedItem.findMany({
+      where: { userId: params.userId },
+      include: { item: true },
+      take: 20, // Sample for preference analysis
+      orderBy: { item: { publishedAt: 'desc' } },
+    })
+
+    // Extract preferred sources and tags from saved items
+    const preferredSources = [...new Set(savedItems.map((si: any) => si.item.source))]
+    const preferredTags = [...new Set(
+      savedItems.flatMap((si: any) => {
+        try {
+          return si.item.tags
+        } catch {
+          return []
+        }
+      })
+    )].slice(0, 10) // Limit to top 10 tags
+
+    // If user has preferences, prioritize content with those characteristics
+    let whereClause = {}
+    if (preferredSources.length > 0 || preferredTags.length > 0) {
+      const orConditions = []
+      
+      if (preferredSources.length > 0) {
+        orConditions.push({ source: { in: preferredSources } })
+      }
+      
+      if (preferredTags.length > 0) {
+        // This is a simplified approach - in production you'd use full-text search
+        orConditions.push({
+          tags: {
+            contains: preferredTags[0] // Just check for the first preferred tag as a simple example
+          }
+        })
+      }
+      
+      if (orConditions.length > 0) {
+        whereClause = { OR: orConditions }
+      }
+    }
+
+    // Get feed items with preference weighting
+    const items = await prisma.feedItem.findMany({
+      where: whereClause,
+      take: params.limit,
+      orderBy: { publishedAt: 'desc' },
+      ...(params.cursor ? { skip: 1, cursor: { id: params.cursor } } : {}),
+    })
+
+    // If we don't have enough personalized items, fill with regular feed
+    if (items.length < params.limit) {
+      const remainingCount = params.limit - items.length
+      const existingIds = items.map((item: any) => item.id)
+      
+      const additionalItems = await prisma.feedItem.findMany({
+        where: existingIds.length > 0 ? { id: { notIn: existingIds } } : {},
+        take: remainingCount,
+        orderBy: { publishedAt: 'desc' },
+        ...(params.cursor ? { skip: 1, cursor: { id: params.cursor } } : {}),
+      })
+      
+      items.push(...additionalItems)
+    }
+
+    const nextCursor = items.length === params.limit ? items[items.length - 1]?.id ?? null : null
+    return { items, nextCursor } as { items: any[]; nextCursor: string | null }
   }
 }
 
